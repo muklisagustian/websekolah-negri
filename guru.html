@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Absensi Guru</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+        }
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    
+    <!-- Header -->
+    <div class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 py-6">
+            <div class="flex items-center space-x-3">
+                <div class="bg-indigo-600 p-3 rounded-lg">
+                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="text-3xl font-bold text-gray-800">Sistem Absensi Guru</h1>
+                    <p class="text-gray-600">Kelola absensi guru dengan mudah</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <div class="max-w-7xl mx-auto px-4 py-4">
+        <div class="bg-white rounded-lg shadow-md p-2 flex space-x-2">
+            <button onclick="showPage('absen')" id="btn-absen" class="flex items-center space-x-2 px-6 py-3 rounded-lg transition bg-indigo-600 text-white">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span class="font-medium">Absen</span>
+            </button>
+            <button onclick="showPage('data')" id="btn-data" class="flex items-center space-x-2 px-6 py-3 rounded-lg transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                </svg>
+                <span class="font-medium">Data Absensi</span>
+            </button>
+            <button onclick="showPage('guru')" id="btn-guru" class="flex items-center space-x-2 px-6 py-3 rounded-lg transition bg-gray-100 text-gray-700 hover:bg-gray-200">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                </svg>
+                <span class="font-medium">Data Guru</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Content -->
+    <div class="max-w-7xl mx-auto px-4 pb-8">
+        
+        <!-- Page Absen -->
+        <div id="page-absen" class="page-content">
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Form Absensi -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        Form Absensi
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Nama Guru</label>
+                            <input type="text" id="namaGuruAbsen" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Masukkan nama guru">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">NIP</label>
+                            <input type="text" id="nipAbsen" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Masukkan NIP">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Keterangan</label>
+                            <select id="keterangan" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                                <option value="hadir">Hadir</option>
+                                <option value="izin">Izin</option>
+                                <option value="sakit">Sakit</option>
+                                <option value="alpha">Alpha</option>
+                            </select>
+                        </div>
+
+                        <button onclick="submitAbsensi()" class="w-full bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition flex items-center justify-center space-x-2">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                            </svg>
+                            <span>Submit Absensi</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Daftar Guru -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        Pilih Guru
+                    </h2>
+                    
+                    <div id="listGuruAbsen" class="space-y-2 max-h-96 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-8">Belum ada data guru. Tambahkan di menu Data Guru.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Data Absensi -->
+        <div id="page-data" class="page-content hidden">
+            <div class="bg-white rounded-lg shadow-md p-6">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        Data Absensi (<span id="totalAbsensi">0</span>)
+                    </h2>
+                    
+                    <div class="flex space-x-2">
+                        <button onclick="exportToExcel()" class="flex items-center space-x-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                            <span>Export Excel</span>
+                        </button>
+                        
+                        <button onclick="cetakLaporan()" class="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path>
+                            </svg>
+                            <span>Cetak PDF</span>
+                        </button>
+                    </div>
+                </div>
+                
+                <!-- Filter Tanggal -->
+                <div class="mb-4 flex space-x-4">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Dari Tanggal</label>
+                        <input type="date" id="filterDari" onchange="filterData()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sampai Tanggal</label>
+                        <input type="date" id="filterSampai" onchange="filterData()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500">
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="resetFilter()" class="px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600 transition">
+                            Reset Filter
+                        </button>
+                    </div>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="bg-gray-50">
+                                <th class="px-4 py-3 text-left text-gray-700 font-medium">No</th>
+                                <th class="px-4 py-3 text-left text-gray-700 font-medium">Nama Guru</th>
+                                <th class="px-4 py-3 text-left text-gray-700 font-medium">NIP</th>
+                                <th class="px-4 py-3 text-left text-gray-700 font-medium">Tanggal</th>
+                                <th class="px-4 py-3 text-left text-gray-700 font-medium">Waktu</th>
+                                <th class="px-4 py-3 text-left text-gray-700 font-medium">Keterangan</th>
+                                <th class="px-4 py-3 text-left text-gray-700 font-medium">Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tableAbsensi">
+                            <tr>
+                                <td colspan="7" class="px-4 py-8 text-center text-gray-500">Belum ada data absensi</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Page Data Guru -->
+        <div id="page-guru" class="page-content hidden">
+            <div class="grid md:grid-cols-2 gap-6">
+                <!-- Form Guru -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6 flex items-center">
+                        <svg class="w-6 h-6 mr-2 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                        </svg>
+                        <span id="formGuruTitle">Tambah Data Guru</span>
+                    </h2>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">Nama Guru</label>
+                            <input type="text" id="namaGuru" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Masukkan nama guru">
+                        </div>
+
+                        <div>
+                            <label class="block text-gray-700 font-medium mb-2">NIP</label>
+                            <input type="text" id="nip" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Masukkan NIP">
+                        </div>
+
+                        <div class="flex space-x-2">
+                            <button onclick="submitGuru()" id="btnSubmitGuru" class="flex-1 bg-indigo-600 text-white py-3 rounded-lg font-medium hover:bg-indigo-700 transition">
+                                Tambah Guru
+                            </button>
+                            <button onclick="cancelEdit()" id="btnCancel" class="hidden px-6 bg-gray-300 text-gray-700 py-3 rounded-lg font-medium hover:bg-gray-400 transition">
+                                Batal
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Daftar Guru -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h2 class="text-2xl font-bold text-gray-800 mb-6">
+                        Daftar Guru (<span id="totalGuru">0</span>)
+                    </h2>
+                    
+                    <div id="listGuru" class="space-y-2 max-h-96 overflow-y-auto">
+                        <p class="text-gray-500 text-center py-8">Belum ada data guru</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let dataGuru = [];
+        let dataAbsensi = [];
+        let dataAbsensiFiltered = [];
+        let editingGuruId = null;
+
+        // Load data dari localStorage
+        function loadData() {
+            const savedGuru = localStorage.getItem('dataGuru');
+            const savedAbsensi = localStorage.getItem('dataAbsensi');
+            
+            if (savedGuru) dataGuru = JSON.parse(savedGuru);
+            if (savedAbsensi) dataAbsensi = JSON.parse(savedAbsensi);
+            
+            dataAbsensiFiltered = [...dataAbsensi];
+            renderAll();
+        }
+
+        // Simpan data ke localStorage
+        function saveData() {
+            localStorage.setItem('dataGuru', JSON.stringify(dataGuru));
+            localStorage.setItem('dataAbsensi', JSON.stringify(dataAbsensi));
+        }
+
+        // Show page
+        function showPage(page) {
+            document.querySelectorAll('.page-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById('page-' + page).classList.remove('hidden');
+            
+            document.querySelectorAll('button[id^="btn-"]').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-gray-100', 'text-gray-700');
+            });
+            
+            document.getElementById('btn-' + page).classList.remove('bg-gray-100', 'text-gray-700');
+            document.getElementById('btn-' + page).classList.add('bg-indigo-600', 'text-white');
+        }
+
+        // Submit Guru
+        function submitGuru() {
+            const nama = document.getElementById('namaGuru').value.trim();
+            const nip = document.getElementById('nip').value.trim();
+            
+            if (!nama || !nip) {
+                alert('Mohon lengkapi semua data!');
+                return;
+            }
+
+            if (editingGuruId) {
+                const index = dataGuru.findIndex(g => g.id === editingGuruId);
+                dataGuru[index] = { ...dataGuru[index], namaGuru: nama, nip };
+                alert('Data guru berhasil diupdate!');
+                cancelEdit();
+            } else {
+                const guru = {
+                    id: 'guru_' + Date.now(),
+                    namaGuru: nama,
+                    nip,
+                    tanggalDaftar: new Date().toISOString().split('T')[0]
+                };
+                dataGuru.push(guru);
+                alert('Guru berhasil ditambahkan!');
+            }
+            
+            document.getElementById('namaGuru').value = '';
+            document.getElementById('nip').value = '';
+            
+            saveData();
+            renderAll();
+        }
+
+        // Edit Guru
+        function editGuru(id) {
+            const guru = dataGuru.find(g => g.id === id);
+            if (!guru) return;
+            
+            editingGuruId = id;
+            document.getElementById('namaGuru').value = guru.namaGuru;
+            document.getElementById('nip').value = guru.nip;
+            document.getElementById('formGuruTitle').textContent = 'Edit Data Guru';
+            document.getElementById('btnSubmitGuru').textContent = 'Update Guru';
+            document.getElementById('btnCancel').classList.remove('hidden');
+        }
+
+        // Cancel Edit
+        function cancelEdit() {
+            editingGuruId = null;
+            document.getElementById('namaGuru').value = '';
+            document.getElementById('nip').value = '';
+            document.getElementById('formGuruTitle').textContent = 'Tambah Data Guru';
+            document.getElementById('btnSubmitGuru').textContent = 'Tambah Guru';
+            document.getElementById('btnCancel').classList.add('hidden');
+        }
+
+        // Delete Guru
+        function deleteGuru(id) {
+            if (!confirm('Yakin ingin menghapus data guru ini?')) return;
+            dataGuru = dataGuru.filter(g => g.id !== id);
+            saveData();
+            renderAll();
+            alert('Data guru berhasil dihapus!');
+        }
+
+        // Pilih Guru untuk Absen
+        function pilihGuru(nama, nip) {
+            document.getElementById('namaGuruAbsen').value = nama;
+            document.getElementById('nipAbsen').value = nip;
+        }
+
+        // Submit Absensi
+        function submitAbsensi() {
+            const nama = document.getElementById('namaGuruAbsen').value.trim();
+            const nip = document.getElementById('nipAbsen').value.trim();
+            const ket = document.getElementById('keterangan').value;
+            
+            if (!nama || !nip) {
+                alert('Mohon lengkapi semua data!');
+                return;
+            }
+
+            const now = new Date();
+            const absensi = {
+                id: 'absen_' + Date.now(),
+                namaGuru: nama,
+                nip,
+                tanggal: now.toISOString().split('T')[0],
+                waktu: now.toLocaleTimeString('id-ID'),
+                keterangan: ket
+            };
+            
+            dataAbsensi.unshift(absensi);
+            
+            document.getElementById('namaGuruAbsen').value = '';
+            document.getElementById('nipAbsen').value = '';
+            document.getElementById('keterangan').value = 'hadir';
+            
+            saveData();
+            renderAll();
+            alert('Absensi berhasil disimpan!');
+        }
+
+        // Delete Absensi
+        function deleteAbsensi(id) {
+            if (!confirm('Yakin ingin menghapus data absensi ini?')) return;
+            dataAbsensi = dataAbsensi.filter(a => a.id !== id);
+            saveData();
+            renderAll();
+            alert('Data absensi berhasil dihapus!');
+        }
+
+        // Render All
+        function renderAll() {
+            renderListGuru();
+            renderListGuruAbsen();
+            renderTableAbsensi();
+        }
+
+        // Render List Guru
+        function renderListGuru() {
+            const container = document.getElementById('listGuru');
+            document.getElementById('totalGuru').textContent = dataGuru.length;
+            
+            if (dataGuru.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada data guru</p>';
+                return;
+            }
+            
+            container.innerHTML = dataGuru.map(guru => `
+                <div class="p-4 border border-gray-200 rounded-lg hover:border-indigo-300 transition">
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="font-medium text-gray-800">${guru.namaGuru}</div>
+                            <div class="text-sm text-gray-600">NIP: ${guru.nip}</div>
+                            <div class="text-xs text-gray-500 mt-1">Terdaftar: ${guru.tanggalDaftar}</div>
+                        </div>
+                        <div class="flex space-x-2">
+                            <button onclick="editGuru('${guru.id}')" class="text-blue-600 hover:text-blue-800 p-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path>
+                                </svg>
+                            </button>
+                            <button onclick="deleteGuru('${guru.id}')" class="text-red-600 hover:text-red-800 p-2">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render List Guru untuk Absen
+        function renderListGuruAbsen() {
+            const container = document.getElementById('listGuruAbsen');
+            
+            if (dataGuru.length === 0) {
+                container.innerHTML = '<p class="text-gray-500 text-center py-8">Belum ada data guru. Tambahkan di menu Data Guru.</p>';
+                return;
+            }
+            
+            container.innerHTML = dataGuru.map(guru => `
+                <div onclick="pilihGuru('${guru.namaGuru}', '${guru.nip}')" class="p-4 border border-gray-200 rounded-lg hover:bg-indigo-50 hover:border-indigo-300 cursor-pointer transition">
+                    <div class="font-medium text-gray-800">${guru.namaGuru}</div>
+                    <div class="text-sm text-gray-600">NIP: ${guru.nip}</div>
+                </div>
+            `).join('');
+        }
+
+        // Render Table Absensi
+        function renderTableAbsensi() {
+            const tbody = document.getElementById('tableAbsensi');
+            document.getElementById('totalAbsensi').textContent = dataAbsensiFiltered.length;
+            
+            if (dataAbsensiFiltered.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="px-4 py-8 text-center text-gray-500">Belum ada data absensi</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = dataAbsensiFiltered.map((item, index) => {
+                const badgeClass = 
+                    item.keterangan === 'hadir' ? 'bg-green-100 text-green-700' :
+                    item.keterangan === 'izin' ? 'bg-blue-100 text-blue-700' :
+                    item.keterangan === 'sakit' ? 'bg-yellow-100 text-yellow-700' :
+                    'bg-red-100 text-red-700';
+                
+                return `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-3">${index + 1}</td>
+                        <td class="px-4 py-3 font-medium">${item.namaGuru}</td>
+                        <td class="px-4 py-3">${item.nip}</td>
+                        <td class="px-4 py-3">${item.tanggal}</td>
+                        <td class="px-4 py-3">${item.waktu}</td>
+                        <td class="px-4 py-3">
+                            <span class="px-3 py-1 rounded-full text-sm font-medium ${badgeClass}">
+                                ${item.keterangan.charAt(0).toUpperCase() + item.keterangan.slice(1)}
+                            </span>
+                        </td>
+                        <td class="px-4 py-3">
+                            <button onclick="deleteAbsensi('${item.id}')" class="text-red-600 hover:text-red-800">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
+                                </svg>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        // Filter Data
+        function filterData() {
+            const dari = document.getElementById('filterDari').value;
+            const sampai = document.getElementById('filterSampai').value;
+            
+            if (!dari && !sampai) {
+                dataAbsensiFiltered = [...dataAbsensi];
+            } else if (dari && !sampai) {
+                dataAbsensiFiltered = dataAbsensi.filter(item => item.tanggal >= dari);
+            } else if (!dari && sampai) {
+                dataAbsensiFiltered = dataAbsensi.filter(item => item.tanggal <= sampai);
+            } else {
+                dataAbsensiFiltered = dataAbsensi.filter(item => item.tanggal >= dari && item.tanggal <= sampai);
+            }
+            
+            renderTableAbsensi();
+        }
+
+        // Reset Filter
+        function resetFilter() {
+            document.getElementById('filterDari').value = '';
+            document.getElementById('filterSampai').value = '';
+            dataAbsensiFiltered = [...dataAbsensi];
+            renderTableAbsensi();
+        }
+
+        // Export to Excel (CSV format)
+        function exportToExcel() {
+            if (dataAbsensiFiltered.length === 0) {
+                alert('Tidak ada data untuk di-export!');
+                return;
+            }
+
+            let csv = 'No,Nama Guru,NIP,Tanggal,Waktu,Keterangan\n';
+            
+            dataAbsensiFiltered.forEach((item, index) => {
+                csv += `${index + 1},"${item.namaGuru}","${item.nip}","${item.tanggal}","${item.waktu}","${item.keterangan}"\n`;
+            });
+
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            
+            link.setAttribute('href', url);
+            link.setAttribute('download', `Laporan_Absensi_${new Date().toISOString().split('T')[0]}.csv`);
+            link.style.visibility = 'hidden';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            alert('Data berhasil di-export ke Excel!');
+        }
+
+        // Cetak Laporan (PDF)
+        function cetakLaporan() {
+            if (dataAbsensiFiltered.length === 0) {
+                alert('Tidak ada data untuk dicetak!');
+                return;
+            }
+
+            const printWindow = window.open('', '_blank');
+            
+            let html = `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                    <title>Laporan Absensi Guru</title>
+                    <style>
+                        body {
+                            font-family: Arial, sans-serif;
+                            padding: 20px;
+                        }
+                        h1 {
+                            text-align: center;
+                            color: #1e40af;
+                            margin-bottom: 10px;
+                        }
+                        .info {
+                            text-align: center;
+                            margin-bottom: 30px;
+                            color: #666;
+                        }
+                        table {
+                            width: 100%;
+                            border-collapse: collapse;
+                            margin-top: 20px;
+                        }
+                        th, td {
+                            border: 1px solid #ddd;
+                            padding: 12px;
+                            text-align: left;
+                        }
+                        th {
+                            background-color: #1e40af;
+                            color: white;
+                            font-weight: bold;
+                        }
+                        tr:nth-child(even) {
+                            background-color: #f9fafb;
+                        }
+                        .badge {
+                            padding: 4px 12px;
+                            border-radius: 12px;
+                            font-size: 12px;
+                            font-weight: bold;
+                        }
+                        .hadir { background-color: #dcfce7; color: #15803d; }
+                        .izin { background-color: #dbeafe; color: #1e40af; }
+                        .sakit { background-color: #fef3c7; color: #a16207; }
+                        .alpha { background-color: #fee2e2; color: #b91c1c; }
+                        .footer {
+                            margin-top: 40px;
+                            text-align: right;
+                        }
+                        @media print {
+                            button { display: none; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <h1>LAPORAN ABSENSI GURU</h1>
+                    <div class="info">
+                        <p>Tanggal Cetak: ${new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}</p>
+                        <p>Total Data: ${dataAbsensiFiltered.length} record</p>
+                    </div>
+                    
+                    <table>
+                        <thead>
+                            <tr>
+                                <th width="5%">No</th>
+                                <th width="25%">Nama Guru</th>
+                                <th width="20%">NIP</th>
+                                <th width="15%">Tanggal</th>
+                                <th width="15%">Waktu</th>
+                                <th width="20%">Keterangan</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+            `;
+            
+            dataAbsensiFiltered.forEach((item, index) => {
+                html += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${item.namaGuru}</td>
+                        <td>${item.nip}</td>
+                        <td>${item.tanggal}</td>
+                        <td>${item.waktu}</td>
+                        <td><span class="badge ${item.keterangan}">${item.keterangan.toUpperCase()}</span></td>
+                    </tr>
+                `;
+            });
+            
+            html += `
+                        </tbody>
+                    </table>
+                    
+                    <div class="footer">
+                        <p>___________________</p>
+                        <p>Kepala Sekolah</p>
+                    </div>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button onclick="window.print()" style="padding: 10px 20px; background-color: #1e40af; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px;">
+                            Cetak / Simpan PDF
+                        </button>
+                    </div>
+                </body>
+                </html>
+            `;
+            
+            printWindow.document.write(html);
+            printWindow.document.close();
+        }
+
+        // Initialize
+        loadData();
+    </script>
+</body>
+</html>
